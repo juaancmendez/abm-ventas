@@ -59,6 +59,15 @@
         $venta->obtenerPorId();
     }
 
+    if(isset($_GET["do"]) && $_GET["do"] == "buscarProducto"){
+        $idproducto = $_GET["id"];
+        $producto = new Producto();
+        $producto->idproducto = $idproducto;
+        $producto->obtenerPorId();
+        echo json_encode($producto->precio);
+        exit;
+    }
+
 ?>
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -105,7 +114,7 @@
                     </div>
                     <div class="col-6 mb-3">
                         <label for="lstProducto">Producto:</label>
-                        <select class="form-control" name="lstProducto" id="lstProducto">
+                        <select onchange="fBuscarPrecioUnitario();" class="form-control" name="lstProducto" id="lstProducto">
                             <option value="" selected disabled>Seleccionar</option>
                             <?php foreach($aProductos as $producto){ 
                                      if(isset($_GET["id"])){
@@ -131,16 +140,31 @@
                         <label for="txtCantidad">Cantidad:</label>
                         <input type="number" name="txtCantidad" id="txtCantidad" class="form-control" value="<?php echo $venta->cantidad ?>">
                     </div>
-                    <!--<div class="col-6 mb-3">
-                        <label for="txtPrecioUnitario">Precio unitario:</label>
-                        <input type="number" name="txtPrecioUnitario" id="txtPrecioUnitario" class="form-control" value="<?php echo $venta->preciounitario ?>">
-                    </div>
                     <div class="col-6 mb-3">
+                        <label for="txtPrecioUnitario">Precio unitario:</label>
+                        <input type="number" name="txtPrecioUnitario" id="txtPrecioUnitario" class="form-control" value="<?php echo $venta->preciounitario?>">
+                    </div>
+                    <!--<div class="col-6 mb-3">
                         <label for="txtTotal">Total:</label>
-                        <input type="number" name="txtTotal" id="txtTotal" class="form-control" value="<?php echo $venta->total ?>">
+                        <input type="number" name="txtTotal" id="txtTotal" class="form-control" value="<?php /*echo $venta->total*/ ?>">
                     </div>-->
                 </div>
             </form>
+            <script>
+                function fBuscarPrecioUnitario(){
+                    idproducto = $("#lstProducto").val();
+                    $.ajax({
+                        type: "GET",
+                        url: "venta-formulario.php?do=buscarProducto",
+                        data: { id:idproducto },
+                        async: true,
+                        dataType: "json",
+                        success: function(respuesta){
+                            $("#txtPrecioUnitario").val(respuesta);
+                        }
+                    });
+                }
+            </script>
         </div>
 
 <?php include_once "footer.php"; ?>
