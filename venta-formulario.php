@@ -164,6 +164,20 @@
                         }
                     });
                 }
+
+                function fBuscarPrecioTotal(){
+                    idproducto = $("#lstProducto").val();
+                    $.ajax({
+                        type: "GET",
+                        url: "venta-formulario.php?do=buscarProducto",
+                        data: { id:idproducto },
+                        async: true,
+                        dataType: "json",
+                        success: function(respuesta){
+                            $("#txtPrecioTotal").val(respuesta);
+                        }
+                    });
+                }
             </script>
         </div>
 
