@@ -138,7 +138,7 @@
                     </div>
                     <div class="col-6 mb-3">
                         <label for="txtCantidad">Cantidad:</label>
-                        <input type="number" name="txtCantidad" id="txtCantidad" class="form-control" value="<?php echo $venta->cantidad ?>">
+                        <input onchange="fVentaTotal()" type="number" name="txtCantidad" id="txtCantidad" class="form-control" value="<?php echo $venta->cantidad ?>">
                     </div>
                     <div class="col-6 mb-3">
                         <label for="txtPrecioUnitario">Precio unitario:</label>
@@ -165,18 +165,9 @@
                     });
                 }
 
-                function fBuscarPrecioTotal(){
-                    idproducto = $("#lstProducto").val();
-                    $.ajax({
-                        type: "GET",
-                        url: "venta-formulario.php?do=buscarProducto",
-                        data: { id:idproducto },
-                        async: true,
-                        dataType: "json",
-                        success: function(respuesta){
-                            $("#txtPrecioTotal").val(respuesta);
-                        }
-                    });
+                function fVentaTotal(){
+                    total = $("#txtPrecioUnitario").val() * $("#txtCantidad").val();
+                    $("#txtTotal").val(total);    
                 }
             </script>
         </div>
